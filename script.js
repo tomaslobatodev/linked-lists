@@ -67,9 +67,14 @@ class LinkedList {
       while (current.next.next !== null) {
         current = current.next
       }
+      let removed = current.next.value
       current.next = null
+      this.size--
+      console.log(
+        "\x1b[31m%s\x1b[0m",
+        `the last node was removed ("${removed}")`
+      )
     }
-    this.size--
   }
 
   contains(value) {
@@ -103,7 +108,8 @@ class LinkedList {
       }
     }
 
-    console.log(string)
+    console.log("\x1b[32m%s\x1b[0m", "This is the list:")
+    console.log("\x1b[33m%s\x1b[0m", string)
   }
 
   insertAt(index, value) {
@@ -116,7 +122,7 @@ class LinkedList {
     let currentIndex = 0
     let previous
     let newNode = new Node(value)
-    while (current !== null && currentIndex !== index) {
+    while (current !== null && currentIndex !== index - 1) {
       previous = current
       current = current.next
       currentIndex++
@@ -129,14 +135,44 @@ class LinkedList {
       this.size++
     }
   }
+
+  removeAt(index) {
+    let current = this.first
+    let currentIndex = 0
+    while (current.next !== null && currentIndex !== index - 2) {
+      current = current.next
+      currentIndex++
+    }
+
+    console.log(
+      "\x1b[31m%s\x1b[0m",
+      `node removed: "${current.next.value}", index: ${index}`
+    )
+    current.next = current.next.next
+    this.size--
+  }
 }
 
 const myLinkedList = new LinkedList()
 
-myLinkedList.prepend("I'm the first")
-myLinkedList.append(987)
-myLinkedList.append(654)
-myLinkedList.append(321)
-myLinkedList.append("I'm the last")
-myLinkedList.insertAt(2, "I'm the 3rd (0 is 1)")
+//append (add as last node)
+myLinkedList.append(123)
+myLinkedList.append(456)
+myLinkedList.append(789)
+myLinkedList.append("I'm the last node")
+myLinkedList.append("No, I'm the last node")
+
+//prepend (add as first node)
+myLinkedList.prepend("I'm the first node")
+
+//insert at (index, value)
+myLinkedList.insertAt(3, "I'm the 3rd node")
+myLinkedList.insertAt(6, "gimme a star pls")
+
+//remove at (index)
+myLinkedList.removeAt(6)
+
+//pop (remove the last)
+myLinkedList.pop()
+
 myLinkedList.toString()
